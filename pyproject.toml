@@ -18,7 +18,7 @@
 
 [project]
 name = "feeph.tca953x"
-version = "0.0.0"
+version = "0.1.0"
 description = "library for I²C-based I/O expanders (TCA9536, TCA9537)"
 authors = [
     {name = "Feeph Aifeimei", email = "55798703+feeph@users.noreply.github.com"},
