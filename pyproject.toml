@@ -25,6 +25,10 @@ authors = [
 ]
 requires-python = ">=3.10,<3.13"
 dependencies = [
+    "adafruit-blinka~=8.46",
+    "adafruit-board-toolkit~=1.1",
+    "feeph-i2c~=0.6",
+    "gpiod~=2.2",
 ]
 readme = "README.md"
 license = {text = "GPL-3.0-or-later"}
