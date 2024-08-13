@@ -10,6 +10,7 @@ import feeph.tca953x as sut
 import feeph.tca953x.tca9537
 
 
+# pylint: disable=protected-access
 class TestTCA9537(unittest.TestCase):
 
     def setUp(self):
@@ -27,6 +28,24 @@ class TestTCA9537(unittest.TestCase):
         pass
 
     # ---------------------------------------------------------------------
+
+    def test_get_mode(self):
+        self.i2c_bus._state[self.i2c_adr][0x03] = 0b0000_0110
+        # -----------------------------------------------------------------
+        computed = self.tca9537.get_pin_modes()
+        expected = (sut.PinMode.OUTPUT, sut.PinMode.INPUT, sut.PinMode.INPUT, sut.PinMode.OUTPUT)
+        # -----------------------------------------------------------------
+        self.assertEqual(computed, expected)
+
+    def test_get_mode_inverted(self):
+        # basically the same as test_get_mode(); this test is provided to
+        # ensure we exercise all branch conditions in get_pin_modes()
+        self.i2c_bus._state[self.i2c_adr][0x03] = 0b0000_1001
+        # -----------------------------------------------------------------
+        computed = self.tca9537.get_pin_modes()
+        expected = (sut.PinMode.INPUT, sut.PinMode.OUTPUT, sut.PinMode.OUTPUT, sut.PinMode.INPUT)
+        # -----------------------------------------------------------------
+        self.assertEqual(computed, expected)
 
     def test_set_mode_all_inputs(self):
         self.tca9537.set_pin_modes(sut.PinMode.INPUT, sut.PinMode.INPUT, sut.PinMode.INPUT, sut.PinMode.INPUT)
@@ -53,6 +72,24 @@ class TestTCA9537(unittest.TestCase):
         self.assertEqual(computed, expected)
 
     # ---------------------------------------------------------------------
+
+    def test_get_polarity(self):
+        self.i2c_bus._state[self.i2c_adr][0x02] = 0b0000_0110
+        # -----------------------------------------------------------------
+        computed = self.tca9537.get_pin_polarity()
+        expected = (sut.PinPolarity.MATCHING, sut.PinPolarity.INVERTED, sut.PinPolarity.INVERTED, sut.PinPolarity.MATCHING)
+        # -----------------------------------------------------------------
+        self.assertEqual(computed, expected)
+
+    def test_get_polarity_inverted(self):
+        # basically the same as test_get_polarity(); this test is provided to
+        # ensure we exercise all branch conditions in get_pin_polarity()
+        self.i2c_bus._state[self.i2c_adr][0x02] = 0b0000_1001
+        # -----------------------------------------------------------------
+        computed = self.tca9537.get_pin_polarity()
+        expected = (sut.PinPolarity.INVERTED, sut.PinPolarity.MATCHING, sut.PinPolarity.MATCHING, sut.PinPolarity.INVERTED)
+        # -----------------------------------------------------------------
+        self.assertEqual(computed, expected)
 
     def test_set_polarity_all_matching(self):
         self.tca9537.set_pin_polarity(sut.PinPolarity.MATCHING, sut.PinPolarity.MATCHING, sut.PinPolarity.MATCHING, sut.PinPolarity.MATCHING)
